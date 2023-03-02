@@ -1,5 +1,7 @@
 package org.example;
 
+import org.json.simple.JSONObject;
+
 import java.io.*;
 import java.util.*;
 
@@ -61,7 +63,25 @@ public class Main {
                 input2 = sc.nextLine();
                 map.get(id2).setFamousSaying(input);
                 map.get(id2).setAuthor(input2);
-            } else if (input.equals("종료"))
+            } else if(input.equals("빌드")){
+                List<JSONObject> list = new ArrayList<>();
+                for(long key:map.keySet()){
+                    JSONObject obj = new JSONObject();
+                    obj.put("id", map.get(key).getId());
+                    obj.put("content", map.get(key).getFamousSaying());
+                    obj.put("author", map.get(key).getAuthor());
+                    list.add(obj);
+                }
+                try {
+                    FileWriter fwriter = new FileWriter("data.json");
+                    fwriter.write(list.toString());
+                    fwriter.flush();
+                    fwriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }else if (input.equals("종료"))
                 break;
             else {
                 System.out.println("잘못된 명령입니다");

@@ -35,12 +35,23 @@ public class Main {
                 }
                 else
                     System.out.printf("%d번 명언은 존재하지 않습니다.\n",id2);
-            } else if(input.equals("종료"))
+            } else if(input.matches("수정\\?id=[0-9]+")) {
+                long id2 = Long.parseLong(input.replace("수정?id=",""));
+                System.out.printf("명언(기존) : %s\n",map.get(id2).getFamousSaying());
+                System.out.print("명언: ");
+                input = sc.nextLine();
+                System.out.printf("작가(기존) : %s\n",map.get(id2).getAuthor());
+                System.out.print("작가: ");
+                input2 = sc.nextLine();
+                map.get(id2).setFamousSaying(input);
+                map.get(id2).setAuthor(input2);
+            }else if(input.equals("종료"))
                 break;
             else{
                 System.out.println("잘못된 명령입니다");
             }
         }
+        sc.close();
     }
 
     static class FamousSaying{

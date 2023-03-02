@@ -1,4 +1,4 @@
-package org.example;
+package org.example.famousSaying.entity;
 
 public class FamousSaying {
     private long id;

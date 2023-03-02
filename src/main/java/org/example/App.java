@@ -7,29 +7,14 @@ import java.util.*;
 
 public class App {
     private final Scanner sc;
-    long id = 0;
-    Map<Long, FamousSaying> map = new LinkedHashMap<>();
+    private long id = 0;
+    private Map<Long, FamousSaying> map = new LinkedHashMap<>();
     public App(Scanner sc) {
         this.sc = sc;
     }
     public void run() {
         String input = "";
-
-        File file = new File("repository.txt");
-
-        try {
-            file.createNewFile();
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String str = "";
-            while ((str = br.readLine()) != null) {
-                String[] strings = str.split("/");
-                id = Long.parseLong(strings[0]);
-                map.put(id, new FamousSaying(id, strings[1], strings[2]));
-            }
-            br.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        repositoryLoad();
 
         System.out.println("== 명언 앱 ==");
         while (true) {
@@ -48,19 +33,12 @@ public class App {
                 build();
             } else if (input.equals("종료"))
                 break;
-            else {
+            else
                 System.out.println("잘못된 명령입니다");
-            }
         }
         sc.close();
-        try {
-            FileWriter fwriter = new FileWriter(file);
-            for (long key : map.keySet())
-                fwriter.write(key + "/" + map.get(key).getFamousSaying() + "/" + map.get(key).getAuthor() + "\n");
-            fwriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        repositorySave();
     }
 
     void register(){
@@ -111,6 +89,35 @@ public class App {
             fwriter.flush();
             fwriter.close();
             System.out.println("data.json 파일의 내용이 갱신되었습니다.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    void repositoryLoad(){
+        File file = new File("repository.txt");
+
+        try {
+            file.createNewFile();
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String str = "";
+            while ((str = br.readLine()) != null) {
+                String[] strings = str.split("/");
+                id = Long.parseLong(strings[0]);
+                map.put(id, new FamousSaying(id, strings[1], strings[2]));
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void repositorySave(){
+        File file = new File("repository.txt");
+        try {
+            FileWriter fwriter = new FileWriter(file);
+            for (long key : map.keySet())
+                fwriter.write(key + "/" + map.get(key).getFamousSaying() + "/" + map.get(key).getAuthor() + "\n");
+            fwriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -9,21 +9,17 @@ import java.io.*;
 import java.util.*;
 
 public class App {
-    private final Scanner sc;
-
-    public App(Scanner sc) {
-        this.sc = sc;
-    }
     public void run() {
-        FamousSayingController fc = new FamousSayingController(sc);
+        FamousSayingController fc = new FamousSayingController();
         SystemController syc = new SystemController();
         String input = "";
+
         fc.repositoryLoad();
 
         System.out.println("== 명언 앱 ==");
         while (true) {
             System.out.print("명언) ");
-            input = sc.nextLine();
+            input = Container.getScanner().nextLine();
 
             if (input.equals("등록")) {
                 fc.register();
@@ -42,7 +38,7 @@ public class App {
             else
                 System.out.println("잘못된 명령입니다");
         }
-        sc.close();
+        Container.close();
 
         fc.repositorySave();
     }
